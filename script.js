@@ -1,11 +1,36 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const envelope = document.getElementById('envelope');
+    const envelopeSection = document.getElementById('envelopeSection');
+    const envelopeMessage = document.getElementById('envelopeMessage');
+    const proposalSection = document.getElementById('proposalSection');
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
-    const proposalCard = document.querySelector('.proposal-card');
     const successMessage = document.getElementById('successMessage');
     
     let yesBtnScale = 1;
     let noClickCount = 0;
+    let envelopeState = 'closed'; // closed, opened, messageShown
+    
+    // Envelope click handler
+    envelope.addEventListener('click', function() {
+        if (envelopeState === 'closed') {
+            // First click: open envelope
+            envelope.classList.add('open');
+            envelopeState = 'opened';
+            
+            // Show message after envelope opens
+            setTimeout(() => {
+                envelopeMessage.classList.remove('hidden');
+                envelopeState = 'messageShown';
+            }, 600);
+            
+        } else if (envelopeState === 'messageShown') {
+            // Second click: hide envelope and show proposal
+            envelopeSection.classList.add('hidden');
+            proposalSection.classList.remove('hidden');
+            proposalSection.style.animation = 'slideIn 0.5s ease';
+        }
+    });
     
     const noButtonMessages = [
         "laaahhhhh",
@@ -21,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
     
     yesBtn.addEventListener('click', function() {
-        proposalCard.classList.add('hidden');
+        proposalSection.classList.add('hidden');
         successMessage.classList.remove('hidden');
         
         createFloatingHearts();
